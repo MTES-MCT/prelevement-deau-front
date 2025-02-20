@@ -71,3 +71,9 @@ export async function getLibelleCommune(codeInsee) {
     return null
   }
 }
+
+export async function getExploitationsByPointId(pointId) {
+  const response = await fetch(`${API_URL}/api/points-prelevement/${pointId}/exploitations`)
+  const exploitations = await response.json()
+  return exploitations
+}
