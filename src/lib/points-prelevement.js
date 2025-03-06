@@ -52,65 +52,6 @@ export function createPointPrelevementFeatures(points) {
   }
 }
 
-export function donutSegment(start, end, r, r0, color) {
-  if (end - start === 1) {
-    end -= 0.000_01
-  }
-
-  const a0 = 2 * Math.PI * (start - 0.25)
-  const a1 = 2 * Math.PI * (end - 0.25)
-  const x0 = Math.cos(a0)
-  const y0 = Math.sin(a0)
-  const x1 = Math.cos(a1)
-  const y1 = Math.sin(a1)
-  const largeArc = end - start > 0.5 ? 1 : 0
-
-  return [
-    '<path d="M',
-    r + (r0 * x0),
-    r + (r0 * y0),
-    'L',
-    r + (r * x0),
-    r + (r * y0),
-    'A',
-    r,
-    r,
-    0,
-    largeArc,
-    1,
-    r + (r * x1),
-    r + (r * y1),
-    'L',
-    r + (r0 * x1),
-    r + (r0 * y1),
-    'A',
-    r0,
-    r0,
-    0,
-    largeArc,
-    0,
-    r + (r0 * x0),
-    r + (r0 * y0),
-    `" fill="${color}" />`
-  ].join(' ')
-}
-
-export function highlightPoint(map, layerId, pointId) {
-  map.setPaintProperty(layerId, 'circle-stroke-color', [
-    'case',
-    ['==', ['get', 'id_point'], pointId],
-    'hotpink',
-    'black'
-  ])
-
-  map.setPaintProperty(layerId, 'circle-stroke-width', [
-    'case',
-    ['==', ['get', 'id_point'], pointId],
-    3,
-    1
-  ])
-}
-
 export const usageColors = {
   'Camion citerne': '#8a2be2',
   'Eau potable': '#007cbf',
@@ -125,16 +66,10 @@ export const usageColors = {
 /**
  * Crée un "pie chart" (camembert) <svg> à partir d'un tableau d'usages (ex: ['Agriculture','Eau potable']).
  */
-export function createUsagePieChart(props) {
-  // On récupère le tableau des usages
-  const usages = props.usages ? JSON.parse(props.usages) : []
+export function createUsagePieChart(usages) {
   const count = usages.length
-
-  // Conteneur principal
   const container = document.createElement('div')
   container.style.display = 'block'
-
-  // Prépare un <svg> centré sur (r, r)
   const svgSize = 24
   const radius = 10
   const cx = radius
@@ -143,22 +78,21 @@ export function createUsagePieChart(props) {
   container.style.height = svgSize + 4
 
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  // Ajout du namespace nécessaire
+  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+
   const borderCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   borderCircle.setAttribute('cx', cx)
   borderCircle.setAttribute('cy', cy)
   borderCircle.setAttribute('r', radius + 2)
   borderCircle.setAttribute('fill', 'white')
-
   svg.append(borderCircle)
   svg.setAttribute('width', String(svgSize))
   svg.setAttribute('height', String(svgSize))
   svg.setAttribute('viewBox', `-2 -2 ${svgSize} ${svgSize}`)
   svg.style.display = 'block'
-
-  // Ajoute le <svg> au conteneur
   container.append(svg)
 
-  // Si aucun usage -> affiche un simple cercle gris
   if (count === 0) {
     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
     circle.setAttribute('cx', cx)
@@ -169,7 +103,6 @@ export function createUsagePieChart(props) {
     return container
   }
 
-  // Chaque usage aura un segment (start->end)
   for (let i = 0; i < count; i++) {
     const usageName = usages[i]
     const color = usageColors[usageName] || '#ccc'
@@ -248,4 +181,16 @@ export function computeBestPopupAnchor(map, coords) {
   }
 
   return anchor
+}
+
+// Fonction utilitaire pour générer une data URL à partir d'un container contenant un <svg>
+export function createSVGDataURL(container) {
+  const svgElement = container.querySelector('svg')
+  if (!svgElement) {
+    throw new Error('Aucun élément SVG trouvé dans le container')
+  }
+
+  const svgMarkup = svgElement.outerHTML
+  const encoded = encodeURIComponent(svgMarkup)
+  return `data:image/svg+xml;charset=utf8,${encoded}`
 }
