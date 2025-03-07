@@ -8,10 +8,17 @@ import LoginHeaderItem from '@/components/ui/login-header-item.js'
 
 const navigationItems = [
   {
+    linkProps: {
+      href: '/',
+      target: '_self'
+    },
+    text: 'Accueil'
+  },
+  {
     menuLinks: [
       {
         linkProps: {
-          href: '/'
+          href: '/dossiers'
         },
         text: 'Dossiers déposés'
       },
@@ -52,7 +59,11 @@ const HeaderComponent = ({user}) => {
 
   const isActive = href => {
     if (href === '/') {
-      return pathname === href || pathname === '/validateur'
+      return pathname === '/'
+    }
+
+    if (href === '/dossiers') {
+      return pathname === '/dossiers' || pathname === '/validateur'
     }
 
     return pathname.startsWith(href) // Correspondance partielle pour les autres chemins

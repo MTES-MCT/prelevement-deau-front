@@ -95,3 +95,10 @@ export async function getExploitationsByPointId(pointId) {
   const exploitations = await response.json()
   return exploitations
 }
+
+export async function getStats() {
+  const response = await fetch(`${API_URL}/api/stats`)
+  const stats = response.json()
+
+  return stats
+}
