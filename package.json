@@ -29,6 +29,7 @@
     "@mui/material": "^6.1.5",
     "@mui/material-nextjs": "^6.3.1",
     "@mui/system": "^6.4.1",
+    "@mui/x-charts": "^7.27.1",
     "@mui/x-data-grid": "^7.22.0",
     "eslint-config-xo-nextjs": "^6.2.1",
     "postcss": "^8",

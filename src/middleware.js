@@ -5,3 +5,13 @@ export default withAuth({
     signIn: '/login'
   }
 })
+
+export const config = {
+  matcher: [
+    '/dossiers',
+    '/points-prelevement',
+    '/prelevements-deau',
+    '/preleveurs',
+    '/validateur'
+  ]
+}
