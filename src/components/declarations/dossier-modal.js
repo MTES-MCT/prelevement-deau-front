@@ -21,14 +21,14 @@ import {
 
 import {getDossier, getFile} from '@/app/api/dossiers.js'
 import {getPointPrelevement} from '@/app/api/points-prelevement.js'
-import DossierCommentaire from '@/components/demarches-simplifiees/dossier/commentaire.js'
-import DeclarantDetails from '@/components/demarches-simplifiees/dossier/declarant-details.js'
-import DemandeurDetails from '@/components/demarches-simplifiees/dossier/demandeur-details.js'
-import FilesDetails from '@/components/demarches-simplifiees/dossier/files-details.js'
-import DossierInfos from '@/components/demarches-simplifiees/dossier/infos.js'
-import PointPrelevementDetails from '@/components/demarches-simplifiees/dossier/point-prelevement-details.js'
-import PrelevementDetails from '@/components/demarches-simplifiees/dossier/prelevement-details.js'
-import FileValidationErrors from '@/components/demarches-simplifiees/file-validation-errors.js'
+import DossierCommentaire from '@/components/declarations/dossier/commentaire.js'
+import DeclarantDetails from '@/components/declarations/dossier/declarant-details.js'
+import DemandeurDetails from '@/components/declarations/dossier/demandeur-details.js'
+import FilesDetails from '@/components/declarations/dossier/files-details.js'
+import DossierInfos from '@/components/declarations/dossier/infos.js'
+import PointPrelevementDetails from '@/components/declarations/dossier/point-prelevement-details.js'
+import PrelevementDetails from '@/components/declarations/dossier/prelevement-details.js'
+import FileValidationErrors from '@/components/declarations/file-validation-errors.js'
 
 const ModalSection = ({children}) => (
   <Box sx={{

@@ -1,6 +1,6 @@
 import {Box, Typography} from '@mui/material'
 
-import DossierStateBadge from '@/components/demarches-simplifiees/dossier-state-badge.js'
+import DossierStateBadge from '@/components/declarations/dossier-state-badge.js'
 
 const DossierInfos = ({dateDepot, status}) => (
   <Box className='flex justify-between mt-2'>

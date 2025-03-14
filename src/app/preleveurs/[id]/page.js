@@ -38,7 +38,7 @@ const Page = async ({params}) => {
       <div><b>Points de prélevement : </b>
         {points.map(point => (
           <div key={point.id_point}>
-            <Link href={`/points-prelevement/${point.id_point}`}>
+            <Link href={`/prelevements/${point.id_point}`}>
               {point.id_point} - {point.nom}
             </Link>
           </div>

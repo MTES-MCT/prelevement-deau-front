@@ -2,7 +2,7 @@ import {Alert} from '@codegouvfr/react-dsfr/Alert'
 import {CallOut} from '@codegouvfr/react-dsfr/CallOut'
 
 import {getDossiers} from '@/app/api/dossiers.js'
-import DossiersList from '@/components/demarches-simplifiees/dossiers-list.js'
+import DossiersList from '@/components/declarations/dossiers-list.js'
 
 const Dossiers = async () => {
   let dossiers = []

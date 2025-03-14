@@ -8,7 +8,7 @@ const PointTabs = ({selectedTab}) => {
   const {id} = useParams()
 
   const handleClick = (e, value) => {
-    router.push(`/points-prelevement/${id}/${value}`)
+    router.push(`/prelevements/${id}/${value}`)
   }
 
   return (

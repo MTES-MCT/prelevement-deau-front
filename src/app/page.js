@@ -26,7 +26,7 @@ const Home = async () => {
             <Typography variant='body1' className='fr-mb-3w'>
               Ce site permet de rassembler les données sur les prélèvements d’eau réalisés dans les nappes souterraines et les cours d’eau de La Réunion, tous usages confondus.
             </Typography>
-            <Link href='/points-prelevement' className='fr-btn fr-btn--secondary'>Accéder à la carte des points de prélèvements</Link>
+            <Link href='/prelevements' className='fr-btn fr-btn--secondary'>Accéder à la carte des points de prélèvements</Link>
           </Box>
           <Box
             className='fr-col-12 fr-col-lg-6 mt-5'

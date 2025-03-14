@@ -9,10 +9,10 @@ import {
   getLibelleCommune,
   getPointPrelevement
 } from '@/app/api/points-prelevement.js'
-import PointExploitations from '@/components/points-prelevement/point-exploitations.js'
-import PointIdentification from '@/components/points-prelevement/point-identification.js'
-import PointLocalistation from '@/components/points-prelevement/point-localisation.js'
-import PointTabs from '@/components/points-prelevement/point-tabs.js'
+import PointExploitations from '@/components/prelevements/point-exploitations.js'
+import PointIdentification from '@/components/prelevements/point-identification.js'
+import PointLocalistation from '@/components/prelevements/point-localisation.js'
+import PointTabs from '@/components/prelevements/point-tabs.js'
 
 const Page = async ({params}) => {
   const {id, tab} = (await params)
@@ -39,7 +39,7 @@ const Page = async ({params}) => {
     <>
       <div className='pt-5 pl-5'>
         <ArrowBackIcon className='pr-1' />
-        <Link href={`/points-prelevement?point-prelevement=${id}`}>Retour</Link>
+        <Link href={`/prelevements?point-prelevement=${id}`}>Retour</Link>
       </div>
       <div className='fr-container mt-4'>
         <PointTabs selectedTab={selectedTab} />

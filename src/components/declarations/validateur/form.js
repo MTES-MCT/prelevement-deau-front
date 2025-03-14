@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 
 import {validateFile} from '@/app/api/dossiers.js'
-import FileValidationErrors from '@/components/demarches-simplifiees/file-validation-errors.js'
+import FileValidationErrors from '@/components/declarations/file-validation-errors.js'
 
 const FileValidateurForm = () => {
   const [file, setFile] = useState(null)

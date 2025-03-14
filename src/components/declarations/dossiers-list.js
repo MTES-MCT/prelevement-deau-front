@@ -9,10 +9,10 @@ import {DataGrid, GridToolbar} from '@mui/x-data-grid'
 import {frFR} from '@mui/x-data-grid/locales'
 import {format} from 'date-fns'
 
-import DossierModal from '@/components/demarches-simplifiees/dossier-modal.js'
-import DossierStateBadge from '@/components/demarches-simplifiees/dossier-state-badge.js'
-import PrelevementTypeBadge from '@/components/demarches-simplifiees/prelevement-type-badge.js'
-import TypeSaisieBadge from '@/components/demarches-simplifiees/type-saisie-badge.js'
+import DossierModal from '@/components/declarations/dossier-modal.js'
+import DossierStateBadge from '@/components/declarations/dossier-state-badge.js'
+import PrelevementTypeBadge from '@/components/declarations/prelevement-type-badge.js'
+import TypeSaisieBadge from '@/components/declarations/type-saisie-badge.js'
 
 const modal = createModal({
   id: 'invalid-dossiers-modal',

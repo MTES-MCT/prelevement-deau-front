@@ -12,8 +12,8 @@ import {
 } from '@mui/material'
 import {format} from 'date-fns'
 
-import PrelevementTypeBadge from '@/components/demarches-simplifiees/prelevement-type-badge.js'
-import TypeSaisieBadge from '@/components/demarches-simplifiees/type-saisie-badge.js'
+import PrelevementTypeBadge from '@/components/declarations/prelevement-type-badge.js'
+import TypeSaisieBadge from '@/components/declarations/type-saisie-badge.js'
 import LabelValue from '@/components/ui/label-value.js'
 
 const PrelevementDetails = ({

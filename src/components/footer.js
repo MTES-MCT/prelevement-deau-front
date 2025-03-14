@@ -3,7 +3,7 @@
 import {Footer as DSFRFooter} from '@codegouvfr/react-dsfr/Footer'
 import {usePathname} from 'next/navigation'
 
-const noFooterPages = new Set(['/points-prelevement'])
+const noFooterPages = new Set(['/prelevements'])
 
 const FooterComponent = () => {
   const pathname = usePathname() // Récupère l'URL actuelle
