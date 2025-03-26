@@ -15,7 +15,6 @@ import Link from 'next/link'
 import FlexSearch from '../../../node_modules/flexsearch/dist/flexsearch.bundle.module.min.js'
 
 import {getUsagesColors} from '@/components/map/legend-colors.js'
-import {normalizeString} from '@/utils/string.js'
 
 const PreleveursList = ({preleveurs}) => {
   const [filteredPreleveurs, setFilteredPreleveurs] = useState(preleveurs)
@@ -27,10 +26,7 @@ const PreleveursList = ({preleveurs}) => {
         id: 'id_beneficiaire',
         index: ['nom', 'prenom', 'raison_sociale', 'sigle'],
         store: true
-      },
-      tokenize: 'full',
-      suggest: true,
-      depth: 2
+      }
     })
 
     for (const preleveur of preleveurs) {
@@ -38,10 +34,10 @@ const PreleveursList = ({preleveurs}) => {
         preleveur.id_beneficiaire,
         {
           idBeneficiaire: preleveur.id_beneficiaire.toString(),
-          nom: normalizeString(preleveur.nom),
-          prenom: normalizeString(preleveur.prenom),
-          raison_sociale: normalizeString(preleveur.raison_sociale), // eslint-disable-line camelcase
-          sigle: normalizeString(preleveur.sigle)
+          nom: preleveur.nom?.toLowerCase(),
+          prenom: preleveur.prenom?.toLowerCase(),
+          raison_sociale: preleveur.raison_sociale?.toLowerCase(), // eslint-disable-line camelcase
+          sigle: preleveur.sigle?.toLowerCase()
         }
       )
     }
@@ -50,40 +46,22 @@ const PreleveursList = ({preleveurs}) => {
   }, [preleveurs])
 
   const handleFilter = e => {
-    const query = normalizeString(e.target.value)
-    const results = index.current.search(query, {
-      suggest: true,
-      limit: 10,
-      enrich: true,
-      bool: 'or',
-      threshold: 5
-    })
-
-    if (query.length === 0) {
-      setFilteredPreleveurs(preleveurs)
-      return
-    }
-
-    if (results.length === 0) {
-      setFilteredPreleveurs([])
-      return
-    }
-
+    const results = index.current.search(e.target.value.toLowerCase())
     const newPreleveurs = []
-    const seenIds = new Set()
 
-    for (const r of results) {
-      for (const doc of r.result) {
-        const newPreleveur = preleveurs.find(p => p.id_beneficiaire === doc.id)
-
-        if (newPreleveur && !seenIds.has(newPreleveur.id_beneficiaire)) {
+    if (results.length > 0) {
+      for (const r of results) {
+        const {result} = r
+        for (const r of result) {
+          const newPreleveur = preleveurs.find(p => p.id_beneficiaire === r)
           newPreleveurs.push(newPreleveur)
-          seenIds.add(newPreleveur.id_beneficiaire)
         }
       }
-    }
 
-    setFilteredPreleveurs(newPreleveurs)
+      setFilteredPreleveurs(newPreleveurs)
+    } else {
+      setFilteredPreleveurs(preleveurs)
+    }
   }
 
   return (
@@ -101,7 +79,7 @@ const PreleveursList = ({preleveurs}) => {
         }}
         onChange={handleFilter}
       />
-      {filteredPreleveurs.length > 0 && filteredPreleveurs.map((preleveur, index) => (
+      {filteredPreleveurs.map((preleveur, index) => (
         <Box
           key={preleveur.id_beneficiaire}
           className='fr-p-2w flex justify-between items-center flex-wrap'
@@ -129,9 +107,6 @@ const PreleveursList = ({preleveurs}) => {
           </div>
         </Box>
       ))}
-      {filteredPreleveurs.length === 0 && (
-        <Box className='p-3'>Aucun résultat</Box>
-      )}
     </Box>
   )
 }
