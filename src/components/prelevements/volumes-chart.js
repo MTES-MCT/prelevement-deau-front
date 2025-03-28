@@ -1,6 +1,6 @@
 'use client'
 
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 import {fr as frColors} from '@codegouvfr/react-dsfr'
 import {CircularProgress} from '@mui/material'
@@ -11,7 +11,18 @@ import {
 import {format, parseISO} from 'date-fns'
 import {fr} from 'date-fns/locale'
 
-const VolumesChart = ({volumes, isLoading}) => {
+import {getVolumesExploitation} from '@/app/api/points-prelevement.js'
+
+const VolumesChart = ({idExploitation}) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [volumes, setVolumes] = useState({
+    valeurs: [],
+    volumeJournalierMax: 0,
+    dateDebut: '',
+    dateFin: '',
+    nbValeursRenseignees: 0,
+    nbDepassements: 0
+  })
   const [showAll, setShowAll] = useState(false)
   const sortedData = [...volumes.valeurs].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
   const displayData = showAll ? sortedData : sortedData.slice(-12)
@@ -48,14 +59,34 @@ const VolumesChart = ({volumes, isLoading}) => {
   const nbValeursRenseignees = showAll ? volumes.nbValeursRenseignees : displayData.length
   const nbDepassements = showAll ? volumes.nbDepassements : displayData.filter(v => v.depassement).length
 
+  useEffect(() => {
+    async function getVolumes() {
+      try {
+        setIsLoading(true)
+        const volumes = await getVolumesExploitation(idExploitation)
+        setVolumes(volumes)
+        setIsLoading(false)
+      } catch (error) {
+        console.error(error)
+        setIsLoading(false)
+      }
+    }
+
+    getVolumes()
+  }, [idExploitation])
+
+  if (volumes.valeurs.length === 0) {
+    return
+  }
+
   return (
     <div className='w-full border-[1px] p-3'>
       <div className='flex justify-between p-3 border-b flex-wrap'>
         <p>
           <b>Période du </b>
-          <i> {format(parseISO(volumes.dateDebut), 'dd/MM/yyyy')} </i>
+          <i> {volumes.dateDebut ? format(parseISO(volumes.dateDebut), 'dd/MM/yyyy') : 'Non renseibné'} </i>
           <b> au </b>
-          <i> {format(parseISO(volumes.dateFin), 'dd/MM/yyyy')} </i>
+          <i> {volumes.dateFin ? format(parseISO(volumes.dateFin), 'dd/MM/yyyy') : 'Non renseigné'} </i>
           <small><u>{showAll ? '' : ' (12 derniers mois)'}</u></small>
         </p>
         <button type='button' className='fr-btn ml-auto' onClick={() => setShowAll(!showAll)}>

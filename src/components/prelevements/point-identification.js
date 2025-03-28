@@ -1,12 +1,33 @@
+import {useState, useEffect} from 'react'
+
 import Article from '@mui/icons-material/Article'
 import Launch from '@mui/icons-material/Launch'
 import {Box, Typography} from '@mui/material'
 import Link from 'next/link'
 
-import {formatAutresNoms} from '../../lib/points-prelevement.js'
+import {getBnpe, getBss} from '@/app/api/points-prelevement.js'
+import {formatAutresNoms} from '@/lib/points-prelevement.js'
 
 const PointIdentification = ({pointPrelevement}) => {
-  const {id_point: idPoint, nom, autres_noms: autresNoms, lienBss, lienBnpe} = pointPrelevement
+  const [lienBss, setLienBss] = useState()
+  const [lienBnpe, setLienBnpe] = useState()
+  const {id_point: idPoint, nom, autres_noms: autresNoms} = pointPrelevement
+
+  useEffect(() => {
+    const fetchInfos = async () => {
+      try {
+        const bss = await getBss(pointPrelevement.id_bss)
+        const bnpe = await getBnpe(pointPrelevement.code_bnpe)
+
+        setLienBss(bss?.lien_infoterre || '')
+        setLienBnpe(bnpe?.uri_ouvrage || '')
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchInfos()
+  }, [pointPrelevement])
 
   return (
     <Box sx={{m: 2, p: 3}}>

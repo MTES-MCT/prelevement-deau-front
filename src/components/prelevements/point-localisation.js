@@ -1,4 +1,8 @@
+import {useEffect, useState} from 'react'
+
 import {Box, Chip, Typography} from '@mui/material'
+
+import {getLibelleCommune} from '@/app/api/points-prelevement.js'
 
 const LabelValue = ({label, value}) => {
   if (value) {
@@ -11,51 +15,69 @@ const LabelValue = ({label, value}) => {
   }
 }
 
-const PointLocalistation = ({pointPrelevement}) => (
-  <Box sx={{m: 2, p: 3}}>
-    <Typography
-      gutterBottom
-      variant='h3'
-    >
-      {pointPrelevement.libelleCommune} - {pointPrelevement.insee_com}
-    </Typography>
-    <LabelValue label='Détails de localisation' value={pointPrelevement.detail_localisation} />
-    <LabelValue label='Précision géométrique' value={pointPrelevement.precision_geom} />
-    {pointPrelevement.type_milieu && (
-      <Box><b>Type de milieu :</b> <Chip label={pointPrelevement.type_milieu} /></Box>
-    )}
-    {pointPrelevement.type_milieu === 'Eau souterraine' && (
-      <>
-        {pointPrelevement.profondeur && (
-          <Box>
-            <b>Profondeur : </b>
-            <i>{pointPrelevement.profondeur} m</i>
-          </Box>
-        )}
-        {pointPrelevement.meso && (
-          <Box>
-            <b>Masse d’eau souterraine (DCE) : </b>
-            <span>{pointPrelevement.meso.code} - {pointPrelevement.meso.nom_provis}</span>
-          </Box>
-        )}
-        <LabelValue label='Zone de répartition des eaux' value={pointPrelevement.zre ? 'oui' : null} />
-      </>
-    )}
-    {pointPrelevement.type_milieu === 'Eau de surface' && (
-      <>
-        {pointPrelevement.meContinentalesBv && (
-          <Box>
-            <b>Masse d’eau cours d’eau (DCE) : </b>
-            <span>{pointPrelevement.meContinentalesBv.code_dce} - {pointPrelevement.meContinentalesBv.nom}</span>
-          </Box>
-        )}
-        <LabelValue label='Cours d’eau (BD Carthage)' value={pointPrelevement.bvBdCarthage?.toponyme_t} />
-        <LabelValue label='Cours d’eau indiqué dans l’autorisation' value={pointPrelevement.cours_eau} />
-        <LabelValue label='Zone de répartition des eaux' value={pointPrelevement.zre ? 'oui' : null} />
-        <LabelValue label='Réservoir biologique' value={pointPrelevement.reservoir_biologique ? 'oui' : null} />
-      </>
-    )}
-  </Box>
-)
+const PointLocalistation = ({pointPrelevement}) => {
+  const [libelleCommune, setLibelleCommune] = useState()
+
+  useEffect(() => {
+    const fetchLibelle = async () => {
+      try {
+        const commune = await getLibelleCommune(pointPrelevement.insee_com)
+
+        setLibelleCommune(commune?.nom || '')
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchLibelle()
+  }, [pointPrelevement])
+
+  return (
+    <Box sx={{m: 2, p: 3}}>
+      <Typography
+        gutterBottom
+        variant='h3'
+      >
+        {libelleCommune} - {pointPrelevement.insee_com}
+      </Typography>
+      <LabelValue label='Détails de localisation' value={pointPrelevement.detail_localisation} />
+      <LabelValue label='Précision géométrique' value={pointPrelevement.precision_geom} />
+      {pointPrelevement.type_milieu && (
+        <Box><b>Type de milieu :</b> <Chip label={pointPrelevement.type_milieu} /></Box>
+      )}
+      {pointPrelevement.type_milieu === 'Eau souterraine' && (
+        <>
+          {pointPrelevement.profondeur && (
+            <Box>
+              <b>Profondeur : </b>
+              <i>{pointPrelevement.profondeur} m</i>
+            </Box>
+          )}
+          {pointPrelevement.meso && (
+            <Box>
+              <b>Masse d’eau souterraine (DCE) : </b>
+              <span>{pointPrelevement.meso.code} - {pointPrelevement.meso.nom_provis}</span>
+            </Box>
+          )}
+          <LabelValue label='Zone de répartition des eaux' value={pointPrelevement.zre ? 'oui' : null} />
+        </>
+      )}
+      {pointPrelevement.type_milieu === 'Eau de surface' && (
+        <>
+          {pointPrelevement.meContinentalesBv && (
+            <Box>
+              <b>Masse d’eau cours d’eau (DCE) : </b>
+              <span>{pointPrelevement.meContinentalesBv.code_dce} - {pointPrelevement.meContinentalesBv.nom}</span>
+            </Box>
+          )}
+          <LabelValue label='Cours d’eau (BD Carthage)' value={pointPrelevement.bvBdCarthage?.toponyme_t} />
+          <LabelValue label='Cours d’eau indiqué dans l’autorisation' value={pointPrelevement.cours_eau} />
+          <LabelValue label='Zone de répartition des eaux' value={pointPrelevement.zre ? 'oui' : null} />
+          <LabelValue label='Réservoir biologique' value={pointPrelevement.reservoir_biologique ? 'oui' : null} />
+        </>
+      )}
+    </Box>
+  )
+}
 
 export default PointLocalistation

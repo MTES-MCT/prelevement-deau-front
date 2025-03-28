@@ -1,12 +1,12 @@
-// Components/loading-overlay.js
 'use client'
+
 import {Box, CircularProgress} from '@mui/material'
 
 const LoadingOverlay = () => (
   <Box
     sx={{
       position: 'absolute',
-      zIndex: 1300, // Par exemple, similaire à un Modal MUI
+      zIndex: 100,
       top: 0,
       left: 0,
       width: '100%',
