@@ -8,6 +8,7 @@ import {
   Typography, Alert
 } from '@mui/material'
 
+import ParameterTrendChart from '@/components/declarations/dossier/prelevements/parameter-trend-chart.js'
 import FileValidationErrors from '@/components/declarations/file-validation-errors.js'
 import PrelevementsCalendar from '@/components/declarations/prelevements-calendar.js'
 
@@ -77,6 +78,7 @@ const Spreadsheet = ({moisDeclaration, file, downloadFile}) => {
             )}
 
             <PrelevementsCalendar data={file.result.data} />
+            <ParameterTrendChart data={file.result.data} />
           </Box>
         </>
       )}
