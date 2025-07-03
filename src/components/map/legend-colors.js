@@ -1,16 +1,23 @@
+import {fr} from '@codegouvfr/react-dsfr'
+
+const {options, decisions} = fr.colors
+
+const defaultTextColor = decisions.text.default.grey
+const lightTextColor = options.grey._1000_100.default
+
 export const legendColors = {
   usages: [
-    {text: 'Eau potable', color: '#007cbf', textColor: 'white'},
-    {text: 'Agriculture', color: '#00a6a6', textColor: 'white'},
-    {text: 'Camion citerne', color: '#8a2be2', textColor: 'white'},
-    {text: 'Eau embouteillée', color: '#ffa6c9', textColor: 'black'},
-    {text: 'Hydroélectricité', color: '#FFCC00', textColor: 'black'},
-    {text: 'Industrie', color: '#ff6347', textColor: 'black'},
-    {text: 'Non renseigné', color: '#ccc', textColor: 'black'}
+    {text: 'Eau potable', color: options.blueCumulus.main526.default, textColor: lightTextColor},
+    {text: 'Agriculture', color: options.greenArchipel.main557.default, textColor: lightTextColor},
+    {text: 'Camion citerne', color: options.purpleGlycine.main494.default, textColor: lightTextColor},
+    {text: 'Eau embouteillée', color: options.purpleGlycine._850_200.default, textColor: defaultTextColor},
+    {text: 'Hydroélectricité', color: options.yellowMoutarde._850_200.default, textColor: defaultTextColor},
+    {text: 'Industrie', color: options.redMarianne._425_625.default, textColor: lightTextColor},
+    {text: 'Non renseigné', color: options.grey._900_175.default, textColor: defaultTextColor}
   ],
   typesMilieu: [
-    {text: 'Eau de surface', color: 'deepskyblue'},
-    {text: 'Eau souterraine', color: 'lightseagreen'}
+    {text: 'Eau de surface', color: options.blueFrance._850_200.default},
+    {text: 'Eau souterraine', color: options.greenMenthe._850_200.default}
   ]
 }
 
