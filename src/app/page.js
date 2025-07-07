@@ -2,14 +2,23 @@ import {fr} from '@codegouvfr/react-dsfr'
 import {Box, Typography} from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
+import {getServerSession} from 'next-auth'
 
 import {getStats} from '@/app/api/points-prelevement.js'
 import Counter from '@/components/counter.js'
 import Pie from '@/components/pie.js'
 import {StartDsfrOnHydration} from '@/dsfr-bootstrap/index.js'
+import {authOptions} from '@/server/auth.js'
 
 const Home = async () => {
-  const stats = await getStats()
+  const {user} = await getServerSession(authOptions)
+  const stats = await getStats(user.territoire)
+  const {
+    activPointsPrelevementCount,
+    activPointsSurfaceCount,
+    activPointsSouterrainCount,
+    activPreleveursCount
+  } = stats
 
   return (
     <>
@@ -57,7 +66,7 @@ const Home = async () => {
         <Box className='flex m-auto'>
           <Counter
             label='Nombre de point de prélèvement en activité : '
-            number={stats.activPointsPrelevementCount}
+            number={activPointsPrelevementCount}
           />
         </Box>
         <Box
@@ -71,8 +80,8 @@ const Home = async () => {
         >
           <Pie
             data={[
-              {id: 'surface', value: stats.activPointsSurfaceCount, label: 'Surface'},
-              {id: 'souterrain', value: stats.activPointsSouterrainCount, label: 'Souterrain'}
+              {id: 'surface', value: activPointsSurfaceCount, label: 'Surface'},
+              {id: 'souterrain', value: activPointsSouterrainCount, label: 'Souterrain'}
             ]}
           />
         </Box>
@@ -102,7 +111,7 @@ const Home = async () => {
         >
           <Counter
             label='Nombre de préleveurs actifs : '
-            number={stats.activPreleveursCount}
+            number={activPreleveursCount}
           />
           <Box>
             <Link href='/preleveurs' className='fr-btn fr-btn--secondary'>
