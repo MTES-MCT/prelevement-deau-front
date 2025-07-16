@@ -16,6 +16,14 @@ export function getPreleveurURL(preleveur) {
   return `/preleveurs/${preleveur.id_preleveur}`
 }
 
+export function getPreleveurEditURL(id) {
+  return `/preleveurs/${id}/edit`
+}
+
+export function getExploitationCreationURL() {
+  return '/exploitations/new'
+}
+
 export function getDocumentURL(document) {
   return `${STORAGE_URL}/document/${document.nom_fichier}`
 }

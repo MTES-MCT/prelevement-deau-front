@@ -46,4 +46,16 @@ export function formatDateRange(start, end) {
   return 'Non renseignée'
 }
 
+export function isOver(dateFin) {
+  if (!dateFin) {
+    return false
+  }
+
+  const today = new Date()
+  const dateFinObj = new Date(dateFin)
+
+  return dateFinObj < today
+}
+
 export default formatDate
+
